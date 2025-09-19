@@ -23,7 +23,7 @@ public class MyFileWriter {
     }
 
     public void generateHiddenFolderFile(String teacher) {
-        File diary = new File(".diary"); 
+        File diary = new File(".diary");
         diary.mkdir();
         File file = new File(diary, "leastFavTeacher");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
@@ -32,8 +32,16 @@ public class MyFileWriter {
             e.printStackTrace();
         }
     }
+    
+    public static void createFolder(String newFolderPath) {
+        File dir = new File(newFolderPath);
+        if (!dir.exists())
+            dir.mkdir();
+    }
 
     public static void main(String[] args) {
+
+        createFolder("newFolderTest");
 
         File secret = new File("Hannah.txt");
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(secret))) {
