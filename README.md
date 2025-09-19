@@ -13,3 +13,5 @@ Git Project
             2. verifies initialization using verifyRepoInitialization()
             3. deletes repo using cleanup()
             4. repeats 2 more times
+    - hash using SHA1.encryptThisString()
+        - taken from (https://www.geeksforgeeks.org/java/sha-1-hash-in-java/)
