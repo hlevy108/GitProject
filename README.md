@@ -13,5 +13,11 @@ Git Project
             2. verifies initialization using verifyRepoInitialization()
             3. deletes repo using cleanup()
             4. repeats 2 more times
-    - hash using SHA1.encryptThisString()
-        - taken from (https://www.geeksforgeeks.org/java/sha-1-hash-in-java/)
+    - create blob file using BLOB.createBlob(File file)
+        1. get file contents using BLOB.getFileContents()
+            - uses buffered reader to read contents and returns them as a String
+        2. hash using SHA1.encryptThisString(String input)
+            - taken from (https://www.geeksforgeeks.org/java/sha-1-hash-in-java/)
+        3. initialize blob file in git objects folder
+        4. copy file contents into blob using BLOB.copyToBlob(String fileContents, File newFile)
+            - uses bufferedwriter

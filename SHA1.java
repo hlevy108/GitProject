@@ -2,8 +2,11 @@
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.io.File;
+import java.io.IOException;
 
 public class SHA1 {
+    
     public static String encryptThisString(String input) {
         try {
             // getInstance() method is called with algorithm SHA-1
