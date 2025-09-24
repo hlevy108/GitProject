@@ -1,7 +1,5 @@
 
 import java.io.*;
-import java.nio.file.*;
-import java.nio.charset.StandardCharsets;
 
 public class MyFileWriter { 
     public void generateHiddenFile(String pswrd) {

@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.IOException;
 
 public class GitRepoTester {
     public static void main(String[] args) {
