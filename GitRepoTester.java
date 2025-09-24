@@ -4,7 +4,8 @@ import java.io.IOException;
 public class GitRepoTester {
     public static void main(String[] args) {
         GitRepoTester tester = new GitRepoTester();
-       tester.testThreeTimes();
+        tester.testRepoInit();
+        tester.testBlobInit();
     }
 
     public boolean verifyRepoInitialization() {
@@ -26,9 +27,19 @@ public class GitRepoTester {
 
     }
 
-    public  void cleanup() {
-        File git = new File("git");
-        rmrf(git);
+    public boolean verifyBlobInitialization(String blobPath) {
+        File blob = new File(blobPath);
+        if (!blob.exists()) {
+            return false;
+        }
+        return true;
+
+
+    }
+
+    public  void cleanup(String path) {
+        File file = new File(path);
+        rmrf(file);
     }
 
     public void rmrf(File file) {
@@ -43,7 +54,7 @@ public class GitRepoTester {
         file.delete(); 
     }
 
-    public void testThreeTimes() {
+    public void testRepoInit() {
         for (int i = 1; i <= 3; i++) {
             System.out.println("Starting cycle #" + i);
             GitRepositoryInitializer.initGitRepo();
@@ -53,10 +64,32 @@ public class GitRepoTester {
             } else {
                 System.out.println("Repository initialization verified for cycle #" + i);
             }
-            cleanup();
+            cleanup("git");
             System.out.println("Cleanup done for cycle # " + i);
         }
         System.out.println("All 3 cycles done!");
 
     }
+    public void testBlobInit() {
+        for (int i = 1; i <= 3; i++) {
+            GitRepositoryInitializer.initGitRepo();
+            File readMe = new File("README.md");
+            String blobPath = BLOB.createBlob(readMe);
+            System.out.println("Starting cycle #" + i);
+            if (!verifyBlobInitialization(blobPath)) {
+                System.out.println("Test failed on cycle #" + i);
+                return;
+            } else {
+                System.out.println("Blob initialization verified for cycle #" + i);
+            }
+            cleanup(blobPath);
+            cleanup("git");
+            System.out.println("Cleanup done for cycle # " + i);
+        }
+        System.out.println("All 3 cycles done!");
+
+    }
+
+
+    
 }

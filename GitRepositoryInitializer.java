@@ -4,10 +4,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class GitRepositoryInitializer {
-    public static void main(String[] args) {
-        initGitRepo();
-
-    }
 
     public static void initGitRepo() {
         boolean created = false;
