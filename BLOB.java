@@ -28,7 +28,7 @@ public class BLOB {
         }
     }
     
-    public static void createBlob(File file) {
+    public static String createBlob(File file) {
         String fileContents = getFileContents(file);
         String key = SHA1.encryptThisString(fileContents); 
         File BLOB = new File("git/objects/" + key);
@@ -38,5 +38,7 @@ public class BLOB {
             System.out.println(e);
         }
         copyToBlob(fileContents, BLOB);
+        return "git/objects/" + key;
     }
+
 }
