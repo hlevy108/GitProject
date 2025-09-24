@@ -38,7 +38,29 @@ public class BLOB {
             System.out.println(e);
         }
         copyToBlob(fileContents, BLOB);
+        File index = new File("git/index");
+        updateIndexFile(file, index);
         return "git/objects/" + key;
+    }
+
+    public static void updateIndexFile(File file, File index) {
+        String fileContents = getFileContents(file);
+        String hash = SHA1.encryptThisString(fileContents); 
+        if (index.length() == 0) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(index))) {
+                writer.write(hash + " " + file.getName());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(index))) {
+                writer.write("\n" + hash + " " + file.getName());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
+
     }
 
 }
