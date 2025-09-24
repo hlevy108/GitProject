@@ -2,8 +2,6 @@
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.io.File;
-import java.io.IOException;
 
 public class SHA1 {
     

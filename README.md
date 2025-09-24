@@ -27,3 +27,5 @@ Git Project
             2. creates blob file
             3. verifies blob creation using verifyBlobInitialization()
             4. repeats 2 more times
+    - index file is updated every time blob is created using BLOB.updateIndexFile(File file, File index)
+        - writes hash of blob and its old file name into the index folder
