@@ -99,7 +99,7 @@ public class GitRepoTester {
     public void testIndexUpdate() {
 
         GitRepositoryInitializer.initGitRepo();
-        
+
         File f1 = new File ("ex1");
         try {
             f1.createNewFile();
@@ -140,6 +140,22 @@ public class GitRepoTester {
         f2.delete();
         cleanup();
 
+    }
+
+    public void resetRepo() {
+        File git = new File("git");
+        File objects = new File(git, "objects");
+        if (objects.exists() && objects.isDirectory()) {
+            for (File f : objects.listFiles()) {
+                rmrf(f);
+            }
+        }
+        File index = new File(git, "index");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(index, false))) {
+            writer.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
 
