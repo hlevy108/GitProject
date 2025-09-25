@@ -1,10 +1,11 @@
-import java.io.File;
+import java.io.*;
 
 public class GitRepoTester {
     public static void main(String[] args) {
         GitRepoTester tester = new GitRepoTester();
         tester.testRepoInit();
         tester.testBlobInit();
+        tester.testIndexUpdate();
     }
 
     public boolean verifyRepoInitialization() {
@@ -33,11 +34,18 @@ public class GitRepoTester {
         }
         return true;
 
-
     }
 
-    public  void cleanup(String path) {
-        File file = new File(path);
+    public boolean verifyIndexUpdate(File original, File blob, File index) {
+        String contents = BLOB.getFileContents(index);
+        if (!contents.contains(blob.getName() + " " + original.getName())) {
+            return false;
+        }
+        return true;
+    }
+
+    public  void cleanup() {
+        File file = new File("git");
         rmrf(file);
     }
 
@@ -63,7 +71,7 @@ public class GitRepoTester {
             } else {
                 System.out.println("Repository initialization verified for cycle #" + i);
             }
-            cleanup("git");
+            cleanup();
             System.out.println("Cleanup done for cycle # " + i);
         }
         System.out.println("All 3 cycles done!");
@@ -81,13 +89,59 @@ public class GitRepoTester {
             } else {
                 System.out.println("Blob initialization verified for cycle #" + i);
             }
-            cleanup(blobPath);
-            cleanup("git");
+            cleanup();
             System.out.println("Cleanup done for cycle # " + i);
         }
         System.out.println("All 3 cycles done!");
 
     }
+
+    public void testIndexUpdate() {
+
+        GitRepositoryInitializer.initGitRepo();
+        
+        File f1 = new File ("ex1");
+        try {
+            f1.createNewFile();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        File f2 = new File ("ex2");
+        try {
+            f2.createNewFile();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("ex1"))) {
+            bufferedWriter.write("hello world!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("ex2"))) {
+            bufferedWriter.write("!dlrow olleh");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File index = new File("git/index");
+        File blob1 = new File(BLOB.createBlob(f1));
+        if (verifyIndexUpdate(f1, blob1, index)) {
+            System.out.println("update 1 successful!");
+        } else {
+            System.out.println("update 1 unsuccessful");
+        }
+        File blob2 = new File(BLOB.createBlob(f2));
+        if (verifyIndexUpdate(f2, blob2, index)) {
+            System.out.println("update 2 successful!");
+        } else {
+            System.out.println("update 2 unsuccessful");
+        }
+        f1.delete();
+        f2.delete();
+        cleanup();
+
+    }
+    
 
 
     
