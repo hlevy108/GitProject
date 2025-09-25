@@ -33,3 +33,7 @@ Git Project
             1. make test files
             2. make blobs of the test files
             3. make sure that the index entry is correct (hash + " " + fileName)
+        - cleanup()
+            - deletes the git file
+        - reset() --> not used
+            - removes everything from objects and index
