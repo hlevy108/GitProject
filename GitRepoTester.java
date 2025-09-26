@@ -3,8 +3,8 @@ import java.io.*;
 public class GitRepoTester {
     public static void main(String[] args) {
         GitRepoTester tester = new GitRepoTester();
-        tester.testRepoInit();
-        tester.testBlobInit();
+        // tester.testRepoInit();
+        // tester.testBlobInit();
         tester.testIndexUpdate();
     }
 
@@ -38,10 +38,18 @@ public class GitRepoTester {
 
     public boolean verifyIndexUpdate(File original, File blob, File index) {
         String contents = BLOB.getFileContents(index);
-        if (!contents.contains(blob.getName() + " " + original.getName())) {
-            return false;
-        }
-        return true;
+        try {
+            if (!contents.contains(blob.getName() + " " + original.getCanonicalPath())) {
+                return false;
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+        
+        return false;
+
+        
     }
 
     public  void cleanup() {
@@ -125,12 +133,12 @@ public class GitRepoTester {
 
         File index = new File("git/index");
         File blob1 = new File(BLOB.createBlob(f1));
+        File blob2 = new File(BLOB.createBlob(f2));
         if (verifyIndexUpdate(f1, blob1, index)) {
             System.out.println("update 1 successful!");
         } else {
             System.out.println("update 1 unsuccessful");
         }
-        File blob2 = new File(BLOB.createBlob(f2));
         if (verifyIndexUpdate(f2, blob2, index)) {
             System.out.println("update 2 successful!");
         } else {

@@ -46,18 +46,19 @@ public class BLOB {
     public static void updateIndexFile(File file, File index) {
         String fileContents = getFileContents(file);
         String hash = SHA1.encryptThisString(fileContents); 
-        if (index.length() == 0) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(index))) {
-                writer.write(hash + " " + file.getName());
-            } catch (IOException e) {
-                e.printStackTrace();
+        try {
+            if (index.length() == 0) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(index))) {
+                    writer.write(hash + " " + file.getCanonicalPath());
+                }
+            } else {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(index, true))) {
+                    writer.newLine(); 
+                    writer.write(hash + " " + file.getCanonicalPath());
+                }
             }
-        } else {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(index))) {
-                writer.write("\n" + hash + " " + file.getName());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         
 
