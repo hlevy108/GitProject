@@ -27,41 +27,39 @@ public class BLOB {
             e.printStackTrace();
         }
     }
-    
+
     public static String createBlob(File file) {
         String fileContents = getFileContents(file);
-        String key = SHA1.encryptThisString(fileContents); 
-        File BLOB = new File("git/objects/" + key);
+        String key = SHA1.encryptThisString(fileContents);
+        File BLOB = new File("git" + File.separator + "objects" + File.separator + key);
         try {
             BLOB.createNewFile();
         } catch (IOException e) {
             System.out.println(e);
         }
         copyToBlob(fileContents, BLOB);
-        File index = new File("git/index");
-        updateIndexFile(file, index);
-        return "git/objects/" + key;
+        File index = new File("git" + File.separator + "index");
+        updateIndexFile(file, index, "blob");
+        return "git" + File.separator + "objects" + File.separator + key;
     }
 
-    public static void updateIndexFile(File file, File index) {
+    public static void updateIndexFile(File file, File index, String type) {
         String fileContents = getFileContents(file);
-        String hash = SHA1.encryptThisString(fileContents); 
+        String hash = SHA1.encryptThisString(fileContents);
         try {
             if (index.length() == 0) {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(index))) {
-                    writer.write(hash + " " + file.getCanonicalPath());
+                    writer.write(type + " " + hash + " " + file.getCanonicalPath());
                 }
             } else {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(index, true))) {
-                    writer.newLine(); 
-                    writer.write(hash + " " + file.getCanonicalPath());
+                    writer.newLine();
+                    writer.write(type + " " + hash + " " + file.getCanonicalPath());
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
 
     }
-
 }
