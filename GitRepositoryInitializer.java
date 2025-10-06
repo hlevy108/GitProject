@@ -9,13 +9,13 @@ public class GitRepositoryInitializer {
         if (!git.exists()) {
             git.mkdir();
             created = true;
-        } 
-        File objects = new File(git,"objects");
+        }
+        File objects = new File(git, "objects");
         if (!objects.exists()) {
             objects.mkdir();
             created = true;
-        } 
-        File index = new File(git,"index");
+        }
+        File index = new File(git, "index");
         if (!index.exists()) {
             try {
                 index.createNewFile();
@@ -24,7 +24,7 @@ public class GitRepositoryInitializer {
                 System.out.println(e);
             }
         }
-        File HEAD = new File(git,"HEAD");
+        File HEAD = new File(git, "HEAD");
         if (!HEAD.exists()) {
             try {
                 HEAD.createNewFile();
@@ -39,7 +39,6 @@ public class GitRepositoryInitializer {
         } else {
             System.out.println("Git Repository Already Exists");
         }
-
 
     }
 }

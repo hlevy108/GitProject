@@ -1,7 +1,7 @@
 
 import java.io.*;
 
-public class MyFileWriter { 
+public class MyFileWriter {
     public void generateHiddenFile(String pswrd) {
         File secret = new File(".WhatsThePassword");
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(secret))) {
@@ -30,7 +30,7 @@ public class MyFileWriter {
             e.printStackTrace();
         }
     }
-    
+
     public static void createFolder(String newFolderPath) {
         File dir = new File(newFolderPath);
         if (!dir.exists())
@@ -57,40 +57,40 @@ public class MyFileWriter {
 
         // // 1. Using FileWriter
         // try (FileWriter writer = new FileWriter(fileName1)) {
-        //     writer.write(data);
+        // writer.write(data);
         // } catch (IOException e) {
-        //     e.printStackTrace();
+        // e.printStackTrace();
         // }
 
         // // 2. Using BufferedWriter
-        // try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName2))) {
-        //     bufferedWriter.write(data);
+        // try (BufferedWriter bufferedWriter = new BufferedWriter(new
+        // FileWriter(fileName2))) {
+        // bufferedWriter.write(data);
         // } catch (IOException e) {
-        //     e.printStackTrace();
+        // e.printStackTrace();
         // }
 
         // // 3. Using FileOutputStream
         // try (FileOutputStream outputStream = new FileOutputStream(fileName3)) {
-        //     outputStream.write(data.getBytes());
+        // outputStream.write(data.getBytes());
         // } catch (IOException e) {
-        //     e.printStackTrace();
+        // e.printStackTrace();
         // }
 
         // // 4. Using BufferedOutputStream
-        // try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(fileName4))) {
-        //     bufferedOutputStream.write(data.getBytes());
+        // try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new
+        // FileOutputStream(fileName4))) {
+        // bufferedOutputStream.write(data.getBytes());
         // } catch (IOException e) {
-        //     e.printStackTrace();
+        // e.printStackTrace();
         // }
 
         // // 5. Using Files (java.nio.file)
         // try {
-        //     Files.write(Paths.get(fileName5), data.getBytes(StandardCharsets.UTF_8));
+        // Files.write(Paths.get(fileName5), data.getBytes(StandardCharsets.UTF_8));
         // } catch (IOException e) {
-        //     e.printStackTrace();
-        // } 
-        
-        
-        
+        // e.printStackTrace();
+        // }
+
     }
 }
