@@ -19,12 +19,16 @@ public class GitRepoTester {
         File testFile2 = new File("testDir1" + File.separator + "testDir2" + File.separator + "testFile2");
         testFile2.createNewFile();
         Files.write(testFile2.toPath(), "hiya but different".getBytes());
-        TREE.createTREE(testDir1.getAbsolutePath());
+        File testFile1Dupe = new File("testDir1" + File.separator + "testDir2" + File.separator + "testFile1"); //duplicate testFile1
+        testFile1Dupe.createNewFile();
+        Files.write(testFile1Dupe.toPath(), "hiya".getBytes());
+        TREE.createTREE("testDir1");
 
-        testDir1.delete();
-        testDir2.delete();
         testFile1.delete();
         testFile2.delete();
+        testFile1Dupe.delete();
+        testDir2.delete();
+        testDir1.delete();
         cleanup();
     }
 
@@ -108,8 +112,7 @@ public class GitRepoTester {
     public void testBlobInit() {
         for (int i = 1; i <= 3; i++) {
             GitRepositoryInitializer.initGitRepo();
-            File readMe = new File("README.md");
-            String blobPath = BLOB.createBlob(readMe);
+            String blobPath = BLOB.createBlob("README.md");
             System.out.println("Starting cycle #" + i);
             if (!verifyBlobInitialization(blobPath)) {
                 System.out.println("Test failed on cycle #" + i);
@@ -152,8 +155,8 @@ public class GitRepoTester {
         }
 
         File index = new File("git/index");
-        File blob1 = new File(BLOB.createBlob(f1));
-        File blob2 = new File(BLOB.createBlob(f2));
+        File blob1 = new File(BLOB.createBlob("ex1"));
+        File blob2 = new File(BLOB.createBlob("ex2"));
         if (verifyIndexUpdate(f1, blob1, index)) {
             System.out.println("update 1 successful!");
         } else {

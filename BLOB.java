@@ -28,8 +28,8 @@ public class BLOB {
         }
     }
 
-    public static String createBlob(File file) {
-        String fileContents = getFileContents(file);
+    public static String createBlob(String path) {
+        String fileContents = getFileContents(new File(path));
         String key = SHA1.encryptThisString(fileContents);
         File BLOB = new File("git" + File.separator + "objects" + File.separator + key);
         try {
@@ -39,22 +39,22 @@ public class BLOB {
         }
         copyToBlob(fileContents, BLOB);
         File index = new File("git" + File.separator + "index");
-        updateIndexFile(file, index, "blob");
+        updateIndexFile(path, index, "blob");
         return "git" + File.separator + "objects" + File.separator + key;
     }
 
-    public static void updateIndexFile(File file, File index, String type) {
-        String fileContents = getFileContents(file);
+    public static void updateIndexFile(String path, File index, String type) {
+        String fileContents = getFileContents(new File(path));
         String hash = SHA1.encryptThisString(fileContents);
         try {
             if (index.length() == 0) {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(index))) {
-                    writer.write(type + " " + hash + " " + file.getCanonicalPath());
+                    writer.write(type + " " + hash + " " + path);
                 }
             } else {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(index, true))) {
                     writer.newLine();
-                    writer.write(type + " " + hash + " " + file.getCanonicalPath());
+                    writer.write(type + " " + hash + " " + path);
                 }
             }
         } catch (IOException e) {

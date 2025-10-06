@@ -5,10 +5,10 @@ public class TREE {
     public static String createTREE(String dirPath) {
         File file = new File(dirPath);
         String fileContents = "";
-        if (file.isFile()) {
-            return SHA1.encryptThisString(BLOB.getFileContents(new File(BLOB.createBlob(file))));
+        if (file.isFile()) { //for recursion, if its a file just end the loop here
+            return SHA1.encryptThisString(BLOB.getFileContents(new File(BLOB.createBlob(dirPath))));
         }
-        for (File f : file.listFiles()) {
+        for (File f : file.listFiles()) { //go through each file in the directory and make the tree file
             if (!fileContents.isBlank()) {
                 fileContents += "\n";
             }
@@ -18,7 +18,7 @@ public class TREE {
             } else {
                 type = "tree";
             }
-            fileContents += type + " " + createTREE(f.getAbsolutePath()) + " " + f.getName();
+            fileContents += type + " " + createTREE(f.getPath()) + " " + f.getName();
         }
         String key = SHA1.encryptThisString(fileContents);
         File TREE = new File("git" + File.separator + "objects" + File.separator + key);
@@ -28,8 +28,6 @@ public class TREE {
             System.out.println(e);
         }
         BLOB.copyToBlob(fileContents, TREE);
-        File index = new File("git" + File.separator + "index");
-        BLOB.updateIndexFile(file, index, "tree");
         return key;
     }
 }
