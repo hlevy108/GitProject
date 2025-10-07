@@ -28,6 +28,12 @@ public class BLOB {
         }
     }
 
+    public static String addFile(String path) {
+        File index = new File("git" + File.separator + "index");
+        updateIndexFile(path, index, "blob");
+        return createBlob(path);
+    }
+
     public static String createBlob(String path) {
         String fileContents = getFileContents(new File(path));
         String key = SHA1.encryptThisString(fileContents);
@@ -38,8 +44,6 @@ public class BLOB {
             System.out.println(e);
         }
         copyToBlob(fileContents, BLOB);
-        File index = new File("git" + File.separator + "index");
-        updateIndexFile(path, index, "blob");
         return "git" + File.separator + "objects" + File.separator + key;
     }
 
