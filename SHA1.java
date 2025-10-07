@@ -1,10 +1,11 @@
+
 // Java program to calculate SHA-1 hash value
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class SHA1 {
-    
+
     public static String encryptThisString(String input) {
         try {
             // getInstance() method is called with algorithm SHA-1
