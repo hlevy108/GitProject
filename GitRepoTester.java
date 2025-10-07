@@ -19,9 +19,12 @@ public class GitRepoTester {
         File testFile2 = new File("testDir1" + File.separator + "testDir2" + File.separator + "testFile2");
         testFile2.createNewFile();
         Files.write(testFile2.toPath(), "hiya but different".getBytes());
-        File testFile1Dupe = new File("testDir1" + File.separator + "testDir2" + File.separator + "testFile1"); //duplicate testFile1
+        File testFile1Dupe = new File("testDir1" + File.separator + "testDir2" + File.separator + "testFile1"); // duplicate
+                                                                                                                // testFile1
         testFile1Dupe.createNewFile();
         Files.write(testFile1Dupe.toPath(), "hiya".getBytes());
+        BLOB.addFile("testDir1" + File.separator + "testFile1");
+
         TREE.createTREE("testDir1");
 
         testFile1.delete();
@@ -60,19 +63,12 @@ public class GitRepoTester {
 
     }
 
-    public boolean verifyIndexUpdate(File original, File blob, File index) {
+    public boolean verifyIndexUpdate(String path, File blob, File index) {
         String contents = BLOB.getFileContents(index);
-        try {
-            if (!contents.contains(blob.getName() + " " + original.getCanonicalPath())) {
-                return false;
-            }
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!contents.contains(blob.getName() + " " + path)) {
+            return false;
         }
-
-        return false;
-
+        return true;
     }
 
     public static void cleanup() {
@@ -155,14 +151,14 @@ public class GitRepoTester {
         }
 
         File index = new File("git/index");
-        File blob1 = new File(BLOB.createBlob("ex1"));
-        File blob2 = new File(BLOB.createBlob("ex2"));
-        if (verifyIndexUpdate(f1, blob1, index)) {
+        File blob1 = new File(BLOB.addFile("ex1"));
+        File blob2 = new File(BLOB.addFile("ex2"));
+        if (verifyIndexUpdate("ex1", blob1, index)) {
             System.out.println("update 1 successful!");
         } else {
             System.out.println("update 1 unsuccessful");
         }
-        if (verifyIndexUpdate(f2, blob2, index)) {
+        if (verifyIndexUpdate("ex2", blob2, index)) {
             System.out.println("update 2 successful!");
         } else {
             System.out.println("update 2 unsuccessful");
