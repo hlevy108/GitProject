@@ -2,6 +2,37 @@ import java.io.File;
 import java.io.IOException;
 
 public class TREE {
+    public static void createROOT() {
+        String fileContents = "";
+        for (File f : new File(".").listFiles()) {
+            String key = createTREE(f.getName());
+            if (key.equals("dns")) {
+                continue;
+            }
+            if (!fileContents.isBlank()) {
+                fileContents += "\n";
+            }
+            String type = "";
+            if (f.isFile()) {
+                type = "blob";
+            } else {
+                type = "tree";
+            }
+            fileContents += type + " " + key + " " + f.getName();
+        }
+        String key = SHA1.encryptThisString(fileContents);
+        if (fileContents.isBlank()) {
+            return;
+        }
+        File TREE = new File("git" + File.separator + "objects" + File.separator + key);
+        try {
+            TREE.createNewFile();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        BLOB.copyToBlob(fileContents, TREE);
+    }
+
     public static String createTREE(String dirPath) {
         File file = new File(dirPath);
         String fileContents = "";
@@ -12,8 +43,11 @@ public class TREE {
             }
             return key;
         }
+        if (file.listFiles() == null) {
+            return "dns";
+        }
         for (File f : file.listFiles()) { // go through each file in the directory and make the tree file
-            if (createTREE(f.getPath()).equals("dns")) {
+            if (createTREE(dirPath + File.separator + f.getName()).equals("dns")) {
                 continue;
             }
             if (!fileContents.isBlank()) {
@@ -28,6 +62,9 @@ public class TREE {
             fileContents += type + " " + createTREE(f.getPath()) + " " + f.getName();
         }
         String key = SHA1.encryptThisString(fileContents);
+        if (fileContents.isBlank()) {
+            return "dns";
+        }
         File TREE = new File("git" + File.separator + "objects" + File.separator + key);
         try {
             TREE.createNewFile();

@@ -39,14 +39,14 @@ public class MyFileWriter {
 
     public static void main(String[] args) {
 
-        createFolder("newFolderTest");
+        // createFolder("newFolderTest");
 
-        File secret = new File("Hannah.txt");
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(secret))) {
-            bufferedWriter.write("I'm 17 years old.\nI have a dog.\nI like coffee ice cream.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // File secret = new File("Hannah.txt");
+        // try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(secret))) {
+        //     bufferedWriter.write("I'm 17 years old.\nI have a dog.\nI like coffee ice cream.");
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
 
         // String data = "Hello, World!";
         // String fileName1 = "example.txt";
