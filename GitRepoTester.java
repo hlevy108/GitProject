@@ -3,10 +3,11 @@ import java.nio.file.Files;
 
 public class GitRepoTester {
     public static void main(String[] args) throws IOException {
-        GitRepoTester tester = new GitRepoTester();
-        tester.testRepoInit();
-        tester.testBlobInit();
-        tester.testIndexUpdate();
+        // GitRepoTester tester = new GitRepoTester();
+        // tester.testRepoInit();
+        // tester.testBlobInit();
+        // tester.testIndexUpdate();
+        cleanup();
 
         GitRepositoryInitializer.initGitRepo();
         File testDir1 = new File("testDir1");
@@ -14,6 +15,8 @@ public class GitRepoTester {
         File testFile1 = new File("testDir1" + File.separator + "testFile1");
         testFile1.createNewFile();
         Files.write(testFile1.toPath(), "hiya".getBytes());
+        File testFile3 = new File("testDir1" + File.separator + "testFile3");
+        testFile3.createNewFile();
         File testDir2 = new File("testDir1" + File.separator + "testDir2");
         testDir2.mkdir();
         File testFile2 = new File("testDir1" + File.separator + "testDir2" + File.separator + "testFile2");
@@ -24,11 +27,15 @@ public class GitRepoTester {
         testFile1Dupe.createNewFile();
         Files.write(testFile1Dupe.toPath(), "hiya".getBytes());
         BLOB.addFile("testDir1" + File.separator + "testFile1");
+        BLOB.addFile("testDir1" + File.separator + "testFile3");
+        BLOB.addFile("testDir1" + File.separator + "testDir2" + File.separator + "testFile2");
+        BLOB.addFile("testDir1" + File.separator + "testDir2" + File.separator + "testFile1");
 
-        TREE.createTREE("testDir1");
+        TREE.createROOT();
 
         testFile1.delete();
         testFile2.delete();
+        testFile3.delete();
         testFile1Dupe.delete();
         testDir2.delete();
         testDir1.delete();
